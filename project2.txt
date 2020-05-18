@@ -1,0 +1,21 @@
+In this project, you are asked to improve the performance of your code developed in Project 1 in two different ways: 
+1) using a combiner 
+2) using in-mapper combining. 
+See pages 14-18 in the class notes. 
+You need to write two Hadoop Map-Reduce jobs in the same file project2/src/main/java/Histogram.java. 
+Each one of this Map-Reduce jobs will read the same input file but will produce output to a different output directory: 
+in your Java main program, both Map-Reduce jobs will read args[0] as the input file with the pixels (which is pixels-small.txt or pixels-large.txt). 
+The first Map-Reduce job will write on the output directory args[1] (which is output) while the second Map-Reduce job will write on the output directory args[1]+"2" (which is output2). 
+If you want to look at the results of the second Map-Reduce job in distributed mode, you can add the following statement in project2/histogram.distr.run:
+
+hdfs dfs -get /user/$USER/output2/part* output2-distr
+Note: The hash table in your second Map-Reduce job must have at most 3*256=768 entries. If you get more, it means that either your Color hashCode() method is wrong 
+(it should return the same int for the same Color) or your Color compareTo method is wrong (it should rteturn 0 for two equal Colors).
+
+Instructions for Comet: Go inside the directory project2.
+
+run histogram.build
+and you can run Histogram.java in standalone mode over a small dataset using:
+sbatch histogram.local.run
+The file histogram.local.out will contain the trace log of the Map-Reduce evaluation while the file output/part-r-00000 will contain the results. These results must be equal to solution-small.txt. To run Histogram.java in distributed mode over a larger dataset, use:
+sbatch histogram.distr.run
